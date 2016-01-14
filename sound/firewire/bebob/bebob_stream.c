@@ -1027,14 +1027,10 @@ int snd_bebob_stream_discover(struct snd_bebob *bebob)
 		avc_bridgeco_fill_unit_addr(addr, AVC_BRIDGECO_PLUG_DIR_IN,
 					    AVC_BRIDGECO_PLUG_UNIT_EXT, i);
 		err = avc_bridgeco_get_plug_type(bebob->unit, addr, &type);
-		if (err < 0) {
-			dev_err(&bebob->unit->device,
-			"fail to get type for external in plug %d: %d\n",
-				i, err);
-			goto end;
-		} else if (type == AVC_BRIDGECO_PLUG_TYPE_MIDI) {
+		if (err < 0)
+			continue;
+		if (type == AVC_BRIDGECO_PLUG_TYPE_MIDI)
 			bebob->midi_input_ports++;
-		}
 	}
 
 	/* count external output plugs for MIDI */
@@ -1043,14 +1039,10 @@ int snd_bebob_stream_discover(struct snd_bebob *bebob)
 		avc_bridgeco_fill_unit_addr(addr, AVC_BRIDGECO_PLUG_DIR_OUT,
 					    AVC_BRIDGECO_PLUG_UNIT_EXT, i);
 		err = avc_bridgeco_get_plug_type(bebob->unit, addr, &type);
-		if (err < 0) {
-			dev_err(&bebob->unit->device,
-			"fail to get type for external out plug %d: %d\n",
-				i, err);
-			goto end;
-		} else if (type == AVC_BRIDGECO_PLUG_TYPE_MIDI) {
+		if (err < 0)
+			continue;
+		if (type == AVC_BRIDGECO_PLUG_TYPE_MIDI)
 			bebob->midi_output_ports++;
-		}
 	}
 
 	/* for check source of clock later */
